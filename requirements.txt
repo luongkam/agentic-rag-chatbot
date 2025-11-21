@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+python-dotenv
+langchain
+langgraph
+langchain-openai
+langchain-google-genai
+supabase
+python-multipart
+pypdf
+python-docx
+beautifulsoup4
+websockets
+tiktoken
