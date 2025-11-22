@@ -1,14 +1,13 @@
-from langchain_openai import ChatOpenAI
 from langchain_core.messages import SystemMessage, HumanMessage
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.output_parsers import StrOutputParser
 from app.agent.state import AgentState
 from app.agent.prompts import SUPERVISOR_SYSTEM_PROMPT, SALES_AGENT_SYSTEM_PROMPT, SUPPORT_AGENT_SYSTEM_PROMPT
+from app.llm_config import get_default_llm
 import os
 
-# Initialize LLM
-# Note: In a real app, we might use different models for different agents
-llm = ChatOpenAI(model="gpt-4o", temperature=0)
+# Initialize LLM using centralized config
+llm = get_default_llm()
 
 def supervisor_node(state: AgentState):
     """

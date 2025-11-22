@@ -1,5 +1,7 @@
 from fastapi import FastAPI, WebSocket, UploadFile, File, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import List, Optional
 import uvicorn
@@ -24,6 +26,23 @@ app.add_middleware(
 class ChatRequest(BaseModel):
     message: str
     thread_id: Optional[str] = "default"
+
+@app.get("/api")
+async def api_info():
+    """
+    API information endpoint
+    """
+    return {
+        "name": "Agentic RAG Chatbot API",
+        "version": "1.0.0",
+        "status": "running",
+        "endpoints": {
+            "POST /chat": "Send a chat message",
+            "WS /ws/realtime": "Realtime voice connection",
+            "POST /upload": "Upload documents for training",
+            "POST /crawl": "Crawl URL for training"
+        }
+    }
 
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
@@ -80,5 +99,14 @@ async def crawl_url(url: str):
     # Placeholder for Web Crawler
     return {"url": url, "status": "Crawling started (Mock)"}
 
+# Serve frontend
+@app.get("/")
+async def serve_frontend():
+    """
+    Serve the frontend HTML
+    """
+    return FileResponse("frontend/index.html")
+
 if __name__ == "__main__":
     uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
+
